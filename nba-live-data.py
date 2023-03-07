@@ -23,9 +23,7 @@ def refresh_data():
 def game_info(games):
   os.system('clear')
   for game in games:
-    awayTeamView = game['awayTeam']['teamName'] + "(" + str(game['awayTeam']['wins']) + "-" + str(game['awayTeam']['losses']) + ")"
-    homeTeamView = game['homeTeam']['teamName'] + "(" + str(game['homeTeam']['wins']) + "-" + str(game['homeTeam']['losses']) + ")"
-    print(awayTeamView + " vs " + homeTeamView)
+    teamData(game)
     date_str = game['gameEt']
     dt = datetime.datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S%z")
     dt = dt.replace(tzinfo=None)
@@ -37,6 +35,13 @@ def game_info(games):
     else:
       print(formatted_date)
     print("\n")
+
+def teamData(game):
+    awayTeamView = game['awayTeam']['teamName'] + " (" + str(game['awayTeam']['wins']) + "-" + str(game['awayTeam']['losses']) + ")"
+    homeTeamView = game['homeTeam']['teamName'] + " (" + str(game['homeTeam']['wins']) + "-" + str(game['homeTeam']['losses']) + ")"
+    print(awayTeamView + " vs " + homeTeamView)
+
+
 
 def game_score(game):
   homePeriods = game['homeTeam']['periods'] 
