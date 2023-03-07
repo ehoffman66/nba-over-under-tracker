@@ -26,13 +26,13 @@ def game_info(games):
     awayTeamView = game['awayTeam']['teamName'] + "(" + str(game['awayTeam']['wins']) + "-" + str(game['awayTeam']['losses']) + ")"
     homeTeamView = game['homeTeam']['teamName'] + "(" + str(game['homeTeam']['wins']) + "-" + str(game['homeTeam']['losses']) + ")"
     print(awayTeamView + " vs " + homeTeamView)
-    print(game['gameStatusText'])
     date_str = game['gameEt']
     dt = datetime.datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S%z")
     dt = dt.replace(tzinfo=None)
     formatted_date = dt.strftime("%m/%d/%Y %I:%M %p")
     current_date = datetime.datetime.now()
     if current_date > dt:
+      print(game['gameStatusText'])
       game_score(game)
     else:
       print(formatted_date)
