@@ -29,9 +29,10 @@ def game_info(games):
     dt = dt.replace(tzinfo=None)
     formatted_date = dt.strftime("%m/%d/%Y %I:%M %p")
     current_date = datetime.datetime.now()
-    print(formatted_date)
     if current_date > dt:
       game_score(game)
+    else:
+      print(formatted_date)
     print("\n")
 
 def game_score(game):
