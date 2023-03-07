@@ -1,5 +1,4 @@
 from nba_api.live.nba.endpoints import scoreboard
-import json
 import datetime
 import requests
 import time
