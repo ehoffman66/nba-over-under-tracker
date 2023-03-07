@@ -15,14 +15,17 @@ testgames = games.get_json()
 games.get_dict()
 
 def refresh_data():
-  response = requests.get("https://nba-prod-us-east-1-mediaops-stats.s3.amazonaws.com/NBA/liveData/scoreboard/todaysScoreboard_00.json")
+  url = "https://nba-prod-us-east-1-mediaops-stats.s3.amazonaws.com/NBA/liveData/scoreboard/todaysScoreboard_00.json"
+  response = requests.get(url)
   games = response.json()['scoreboard']['games']
   game_info(games)
 
 def game_info(games):
   os.system('clear')
   for game in games:
-    print(game['awayTeam']['teamName'] + " vs " + game['homeTeam']['teamName'])
+    awayTeamView = game['awayTeam']['teamName'] + "(" + str(game['awayTeam']['wins']) + "-" + str(game['awayTeam']['losses']) + ")"
+    homeTeamView = game['homeTeam']['teamName'] + "(" + str(game['homeTeam']['wins']) + "-" + str(game['homeTeam']['losses']) + ")"
+    print(awayTeamView + " vs " + homeTeamView)
     print(game['gameStatusText'])
     date_str = game['gameEt']
     dt = datetime.datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S%z")
