@@ -14,9 +14,7 @@ def game_info(games):
   os.system('clear')
   for game in games:
     teamData(game)
-    date_str = game['gameEt']
-    dt = datetime.datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S%z")
-    dt = dt.replace(tzinfo=None)
+    dt = formatDate(game['gameEt'])
     formatted_date = dt.strftime("%m/%d/%Y %I:%M %p")
     current_date = datetime.datetime.now()
     if current_date > dt:
@@ -26,12 +24,15 @@ def game_info(games):
       print(formatted_date)
     print("\n")
 
+def formatDate(date):
+  dt = datetime.datetime.strptime(date, "%Y-%m-%dT%H:%M:%S%z")
+  dt = dt.replace(tzinfo=None)
+  return dt
+
 def teamData(game):
     awayTeamView = game['awayTeam']['teamName'] + " (" + str(game['awayTeam']['wins']) + "-" + str(game['awayTeam']['losses']) + ")"
     homeTeamView = game['homeTeam']['teamName'] + " (" + str(game['homeTeam']['wins']) + "-" + str(game['homeTeam']['losses']) + ")"
     print(awayTeamView + " vs " + homeTeamView)
-
-
 
 def game_score(game):
   homePeriods = game['homeTeam']['periods'] 
@@ -44,5 +45,5 @@ def game_score(game):
 
 refresh_data()
 while True:
-  threading.Timer(5.0, refresh_data).start()
+  threading.Timer(2.0, refresh_data).start()
   time.sleep(5)
