@@ -1,18 +1,8 @@
-from nba_api.live.nba.endpoints import scoreboard
 import datetime
 import requests
 import time
 import threading
 import os
-
-# Today's Score Board
-games = scoreboard.ScoreBoard()
-
-# json
-testgames = games.get_json()
-
-# dictionary
-games.get_dict()
 
 def refresh_data():
   url = "https://nba-prod-us-east-1-mediaops-stats.s3.amazonaws.com/NBA/liveData/scoreboard/todaysScoreboard_00.json"
