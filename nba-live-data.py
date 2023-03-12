@@ -9,7 +9,7 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 api_key = config.get('API_Key', 'key')
 
-def refresh_data():
+def refresh_game_data():
   url = "https://nba-prod-us-east-1-mediaops-stats.s3.amazonaws.com/NBA/liveData/scoreboard/todaysScoreboard_00.json"
   response = requests.get(url)
   games = response.json()['scoreboard']['games']
@@ -59,7 +59,7 @@ def game_score(game):
   print("Periods : " + str(homePeriods[0]['score']), str(homePeriods[1]['score']), str(homePeriods[2]['score']), str(homePeriods[3]['score']))
   print("Total: "     + str((game['homeTeam']['score'] + game['awayTeam']['score']))) 
 
-refresh_data()
+refresh_game_data()
 while True:
   threading.Timer(2.0, refresh_data).start()
   time.sleep(2)
