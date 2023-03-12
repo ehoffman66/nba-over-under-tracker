@@ -3,6 +3,11 @@ import requests
 import time
 import threading
 import os
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+api_key = config.get('API_Key', 'key')
 
 def refresh_data():
   url = "https://nba-prod-us-east-1-mediaops-stats.s3.amazonaws.com/NBA/liveData/scoreboard/todaysScoreboard_00.json"
@@ -10,8 +15,19 @@ def refresh_data():
   games = response.json()['scoreboard']['games']
   game_info(games)
 
+def refresh_over_under():
+  url = "https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?regions=us&oddsFormat=american&markets=totals&apiKey="
+  url = url + api_key
+  response = requests.get(url)
+  over_under = response.json()
+  for game in over_under:
+    for market in game['bookmakers']:
+      if market['key'] == 'draftkings':
+        print(market['markets'])
+
 def game_info(games):
   os.system('clear')
+  #refresh_over_under()
   for game in games:
     teamData(game)
     dt = formatDate(game['gameEt'])
@@ -46,4 +62,4 @@ def game_score(game):
 refresh_data()
 while True:
   threading.Timer(2.0, refresh_data).start()
-  time.sleep(5)
+  time.sleep(2)
