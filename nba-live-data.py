@@ -56,9 +56,11 @@ def formatDate(date):
   return dt
 
 def teamData(game):
-    awayTeamView = game['awayTeam']['teamCity'] + " " + game['awayTeam']['teamName'] + " (" + str(game['awayTeam']['wins']) + "-" + str(game['awayTeam']['losses']) + ")"
-    homeTeamView = game['homeTeam']['teamCity'] + " " + game['homeTeam']['teamName'] + " (" + str(game['homeTeam']['wins']) + "-" + str(game['homeTeam']['losses']) + ")"
-    print(awayTeamView + " vs " + homeTeamView)
+    away_team_name = game['awayTeam']['teamCity'] + " " + game['awayTeam']['teamName']
+    home_team_name = game['homeTeam']['teamCity'] + " " + game['homeTeam']['teamName']
+    away_team_view = away_team_name + " (" + str(game['awayTeam']['wins']) + "-" + str(game['awayTeam']['losses']) + ")"
+    home_team_view = home_team_name + " (" + str(game['homeTeam']['wins']) + "-" + str(game['homeTeam']['losses']) + ")"
+    print(away_team_view + " vs " + home_team_view)
 
 def game_score(game):
   homePeriods = game['homeTeam']['periods'] 
