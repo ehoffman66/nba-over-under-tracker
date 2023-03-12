@@ -10,6 +10,16 @@ config.read('config.ini')
 api_key = config.get('API_Key', 'key')
 
 def refresh_game_data():
+  """
+    This function calls the official NBA API and recieves the current days scores. The
+    data for all of the days games are parsed and sent over to game_info function.
+
+    Args:
+        No Arguments
+
+    Returns:
+        No Returns
+  """
   url = "https://nba-prod-us-east-1-mediaops-stats.s3.amazonaws.com/NBA/liveData/scoreboard/todaysScoreboard_00.json"
   response = requests.get(url)
   games = response.json()['scoreboard']['games']
@@ -61,5 +71,5 @@ def game_score(game):
 
 refresh_game_data()
 while True:
-  threading.Timer(2.0, refresh_data).start()
+  threading.Timer(2.0, refresh_game_data).start()
   time.sleep(2)
