@@ -46,6 +46,7 @@ def game_info(games,over_under_data):
     dt = formatDate(game['gameEt'])
     formatted_date = dt.strftime("%m/%d/%Y %I:%M %p")
     current_date = datetime.datetime.now()
+    overunder = 0
     if current_date > dt:
       print(game['gameStatusText'])
       for value in over_under_data:
