@@ -30,14 +30,17 @@ def refresh_over_under():
   url = url + api_key
   response = requests.get(url)
   over_under = response.json()
+  over_under_game_data = []
   for game in over_under:
     for market in game['bookmakers']:
-      if market['key'] == 'draftkings':
-        print(market['markets'])
+      if market['key'] == 'draftkings' or market['key'] == "DraftKings":
+        print(market['markets'][0]['outcomes'])
+        over = market['markets'][0]['outcomes'][0]['point']
+        under = market['markets'][0]['outcomes'][1]['point']
+        over_under_game_data.append((game['home_team'],over,under))   
+  return over_under_game_data
 
 def game_info(games):
-  os.system('clear')
-  #refresh_over_under()
   for game in games:
     teamData(game)
     dt = formatDate(game['gameEt'])
@@ -72,6 +75,11 @@ def game_score(game):
   print("Total: "     + str((game['homeTeam']['score'] + game['awayTeam']['score']))) 
 
 refresh_game_data()
+over_under_data = refresh_over_under()
 while True:
-  threading.Timer(2.0, refresh_game_data).start()
-  time.sleep(2)
+  os.system('clear')
+  threading.Timer(5.0, refresh_game_data).start()
+  print(over_under_data)
+  time.sleep(5)
+
+
