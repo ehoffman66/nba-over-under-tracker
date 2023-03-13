@@ -9,7 +9,7 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 api_key = config.get('API_Key', 'key')
 
-def refresh_game_data():
+def refresh_game_data(over_under_data):
   """
     This function calls the official NBA API and recieves the current days scores. The
     data for all of the days games are parsed and sent over to game_info function.
@@ -23,7 +23,7 @@ def refresh_game_data():
   url = "https://nba-prod-us-east-1-mediaops-stats.s3.amazonaws.com/NBA/liveData/scoreboard/todaysScoreboard_00.json"
   response = requests.get(url)
   games = response.json()['scoreboard']['games']
-  game_info(games)
+  game_info(games,over_under_data)
 
 def refresh_over_under():
   url = "https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?regions=us&oddsFormat=american&markets=totals&apiKey="
@@ -40,7 +40,7 @@ def refresh_over_under():
         over_under_game_data.append((game['home_team'],over,under))   
   return over_under_game_data
 
-def game_info(games):
+def game_info(games,over_under_data):
   for game in games:
     teamData(game)
     dt = formatDate(game['gameEt'])
@@ -48,7 +48,11 @@ def game_info(games):
     current_date = datetime.datetime.now()
     if current_date > dt:
       print(game['gameStatusText'])
-      game_score(game)
+      for value in over_under_data:
+        home_team = game['homeTeam']['teamCity'] + " " + game['homeTeam']['teamName']
+        if value[0] == home_team:
+          overunder = value[1]
+      game_score(game,overunder)
     else:
       print(formatted_date)
     print("\n")
@@ -65,21 +69,21 @@ def teamData(game):
     home_team_view = home_team_name + " (" + str(game['homeTeam']['wins']) + "-" + str(game['homeTeam']['losses']) + ")"
     print(away_team_view + " vs " + home_team_view)
 
-def game_score(game):
+def game_score(game,overunder):
   homePeriods = game['homeTeam']['periods'] 
   awayPeriods = game['awayTeam']['periods'] 
   print("Away Team: " + str(game['awayTeam']['score']))
   print("Periods : " + str(awayPeriods[0]['score']), str(awayPeriods[1]['score']), str(awayPeriods[2]['score']), str(awayPeriods[3]['score']))
   print("Home Team: " + str(game['homeTeam']['score'])) 
   print("Periods : " + str(homePeriods[0]['score']), str(homePeriods[1]['score']), str(homePeriods[2]['score']), str(homePeriods[3]['score']))
-  print("Total: "     + str((game['homeTeam']['score'] + game['awayTeam']['score']))) 
+  print("Total: "     + str((game['homeTeam']['score'] + game['awayTeam']['score'])))
+  print("Over/Under: " + str(overunder))
 
-refresh_game_data()
 over_under_data = refresh_over_under()
+
 while True:
   os.system('clear')
-  threading.Timer(5.0, refresh_game_data).start()
-  print(over_under_data)
+  threading.Timer(5.0, refresh_game_data(over_under_data)).start()
   time.sleep(5)
 
 
