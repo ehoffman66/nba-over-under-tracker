@@ -34,7 +34,6 @@ def refresh_over_under():
   for game in over_under:
     for market in game['bookmakers']:
       if market['key'] == 'draftkings' or market['key'] == "DraftKings":
-        print(market['markets'][0]['outcomes'])
         over = market['markets'][0]['outcomes'][0]['point']
         under = market['markets'][0]['outcomes'][1]['point']
         over_under_game_data.append((game['home_team'],over,under))   
@@ -82,8 +81,17 @@ def game_score(game,overunder):
     print("Over/Under: " + str(overunder))
 
 over_under_data = refresh_over_under()
+refresh_game_data(over_under_data)
 
-while True:
-  os.system('clear')
-  threading.Timer(5.0, refresh_game_data(over_under_data)).start()
-  time.sleep(5)
+def refresh_over_under_periodically():
+  global over_under_data
+  over_under_data = refresh_over_under()
+  threading.Timer(30.0, refresh_over_under_periodically).start()
+
+def refresh_game_data_periodically():
+  os.system('cls' if os.name == 'nt' else 'clear')
+  refresh_game_data(over_under_data)
+  threading.Timer(5.0, refresh_game_data_periodically).start()
+
+refresh_over_under_periodically()
+refresh_game_data_periodically()
