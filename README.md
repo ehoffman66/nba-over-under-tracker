@@ -14,8 +14,6 @@ To ensure accurate and up-to-date data, the NBA Over/Under Daily Tracker pulls i
 
 ## Installation
 
-# Installation
-
 1. Clone the repository:
 
     ```
