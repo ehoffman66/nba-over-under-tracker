@@ -11,7 +11,6 @@ To ensure accurate and up-to-date data, the NBA Over/Under Daily Tracker pulls i
 - [Examples](#examples)
 - [Contributing](#contributing)
 - [Bugs and Issues](#bugs-and-issues)
-- [License](#license)
 
 ## Installation
 
@@ -30,9 +29,5 @@ To ensure accurate and up-to-date data, the NBA Over/Under Daily Tracker pulls i
 ...
 
 ## Bugs and Issues
-
-...
-
-## License
 
 ...
