@@ -78,7 +78,8 @@ def game_score(game,overunder):
   print("Home Team: " + str(game['homeTeam']['score'])) 
   print("Periods : " + str(homePeriods[0]['score']), str(homePeriods[1]['score']), str(homePeriods[2]['score']), str(homePeriods[3]['score']))
   print("Total: "     + str((game['homeTeam']['score'] + game['awayTeam']['score'])))
-  print("Over/Under: " + str(overunder))
+  if overunder != 0:
+    print("Over/Under: " + str(overunder))
 
 over_under_data = refresh_over_under()
 
@@ -86,5 +87,3 @@ while True:
   os.system('clear')
   threading.Timer(5.0, refresh_game_data(over_under_data)).start()
   time.sleep(5)
-
-
