@@ -44,11 +44,6 @@ To ensure accurate and up-to-date data, the NBA Over/Under Daily Tracker pulls i
     
 Note: This project requires Python 3.6 or later.
 
-
-## Usage
-
-...
-
 ## Examples
 
 ...
