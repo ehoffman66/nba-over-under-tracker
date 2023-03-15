@@ -4,6 +4,8 @@ The NBA Over/Under Daily Tracker is a Python application designed to swiftly gat
 
 To ensure accurate and up-to-date data, the NBA Over/Under Daily Tracker pulls information from both the NBA official API and Odds-API. It's worth noting that Odds-API offers up to 500 free monthly calls for your convenience.
 
+*In order to make sure that you do not go over the montly quota for usage of Odd-API, you can set the threading on refresh_over_under_periodically to refresh at a slower rate*
+
 ## Table of Contents
 
 - [Installation](#installation)
