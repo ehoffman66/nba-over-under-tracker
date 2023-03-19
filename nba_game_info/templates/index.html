@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Game Info</title>
+    <script>
+        function updateScores() {
+            fetch('/game_data')
+                .then(response => response.json())
+                .then(games => {
+                    const gameList = document.getElementById('game-list');
+                    gameList.innerHTML = '';
+                    for (const game of games) {
+                        const gameDiv = document.createElement('div');
+                        gameDiv.innerHTML = `
+                            <p>
+                                ${game.teams}<br>
+                                ${game.status}<br>
+                                ${game.score ? game.score : ''}<br>
+                            </p>
+                            <hr>
+                        `;
+                        gameList.appendChild(gameDiv);
+                    }
+                });
+        }
+
+        function updateOverUnder() {
+            fetch('/over_under_data')
+                .then(response => response.json())
+                .then(over_under_data => {
+                    // You can update the over/under data on the page as needed
+                });
+        }
+
+        setInterval(updateScores, 5000); // Refresh scores every 5 seconds
+        setInterval(updateOverUnder, 30000); // Refresh over/under data every 30 seconds
+    </script>
+</head>
+<body onload="updateScores()">
+    <h1>NBA Game Info</h1>
+    <div id="game-list"></div>
+</body>
+</html>
