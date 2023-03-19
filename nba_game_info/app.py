@@ -75,7 +75,7 @@ def game_score(game, overunder):
     game_score_output.append("Periods : " + str(homePeriods[0]['score']) + ", " + str(homePeriods[1]['score']) + ", " + str(homePeriods[2]['score']) + ", " + str(homePeriods[3]['score']) + "<br>")
     game_score_output.append("Total: " + str((game['homeTeam']['score'] + game['awayTeam']['score'])) + "<br>")
     if overunder != 0:
-        game_score_output.append("Over/Under: " + str(overunder) + "<br>")
+        game_score_output.append("Over/Under: " + str(overunder) + " (" + str(overunder - (game['homeTeam']['score'] + game['awayTeam']['score'])) +  ")" + "<br>")
     return ''.join(game_score_output)
 
 @app.route("/")
