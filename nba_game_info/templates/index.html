@@ -4,42 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NBA Game Info</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+        let gameData = [];
         function updateScores() {
             fetch('/game_data')
                 .then(response => response.json())
-                .then(games => {
-                    const gameList = document.getElementById('game-list');
-                    gameList.innerHTML = '';
-                    for (const game of games) {
-                        const gameDiv = document.createElement('div');
-                        gameDiv.innerHTML = `
-                            <p>
-                                ${game.teams}<br>
-                                ${game.status}<br>
-                                ${game.score ? game.score : ''}<br>
-                            </p>
-                            <hr>
-                        `;
-                        gameList.appendChild(gameDiv);
-                    }
-                });
+                .then(data => {
+                    gameData = data;
+                    displayGames();
+                })
+                .catch(error => console.error('Error fetching scores:', error));
         }
 
-        function updateOverUnder() {
-            fetch('/over_under_data')
-                .then(response => response.json())
-                .then(over_under_data => {
-                    // You can update the over/under data on the page as needed
-                });
-        }
+        function displayGames() {
+            const gameList = document.getElementById('game-list');
+            gameList.innerHTML = '';
 
-        setInterval(updateScores, 5000); // Refresh scores every 5 seconds
-        setInterval(updateOverUnder, 30000); // Refresh over/under data every 30 seconds
+            gameData.forEach(game => {
+                const gameDiv = document.createElement('div');
+                gameDiv.className = 'mb-3';
+                gameDiv.innerHTML = `
+                    <h5>${game.teams}</h5>
+                    <p>
+                        ${game.status}<br>
+                        ${game.score ? game.score : ''}
+                    </p>
+                    <hr>
+                `;
+                gameList.appendChild(gameDiv);
+            });
+
+            setTimeout(updateScores, 5000);
+        }
     </script>
 </head>
 <body onload="updateScores()">
-    <h1>NBA Game Info</h1>
-    <div id="game-list"></div>
+    <div class="container">
+        <h1 class="text-center mt-4 mb-4">NBA Game Info</h1>
+        <div id="game-list"></div>
+    </div>
 </body>
 </html>
