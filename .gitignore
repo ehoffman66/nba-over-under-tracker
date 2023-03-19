@@ -1,6 +1,10 @@
 # ignore config file
 nba_game_info/config.ini
 
+.DS_Store
+**/.DS_Store
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
