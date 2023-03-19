@@ -24,9 +24,15 @@
             const gameList = document.getElementById('game-list');
             gameList.innerHTML = '';
 
-            gameData.forEach(game => {
+            let row = document.createElement('div');
+            row.className = 'row';
+
+            gameData.forEach((game, index) => {
+                const col = document.createElement('div');
+                col.className = 'col-md-6';
+
                 const gameDiv = document.createElement('div');
-                gameDiv.className = 'mb-3';
+                gameDiv.className = 'game-div mb-4';
                 gameDiv.innerHTML = `
                     <h5>${game.teams}</h5>
                     <p>
@@ -35,11 +41,23 @@
                     </p>
                     <hr>
                 `;
-                gameList.appendChild(gameDiv);
+                col.appendChild(gameDiv);
+                row.appendChild(col);
+
+                if ((index + 1) % 2 === 0) {
+                    gameList.appendChild(row);
+                    row = document.createElement('div');
+                    row.className = 'row';
+                }
             });
+
+            if (gameData.length % 2 !== 0) {
+                gameList.appendChild(row);
+            }
 
             setTimeout(updateScores, 5000);
         }
+
     </script>
 </head>
 <body onload="updateScores()">
