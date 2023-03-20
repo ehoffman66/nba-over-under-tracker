@@ -6,9 +6,12 @@ body {
 }
 
 .container {
-    display: flex;         
-    align-items: center;   
-    justify-content: space-between; 
+    align-items: center;
+}
+
+.header-row {
+    justify-content: center;
+    display: flex;
 }
 
 header {
@@ -34,7 +37,7 @@ section {
 }
 
 .game-div {
-    width: 95%;
+    width: 100%;
     background-color: white;
     padding: 20px;
     margin: 10px;
