@@ -20,7 +20,8 @@
     <div class="container mt-4">
         <div class="row header-row">
             <div class="col-12 text-center">
-                <h1 class="mb-4">NBA Game Info</h1>
+                <h1 class="mb-4 main-title">NBA Over/Under Game Data</h1>
+                <p id="last-updated">Data Last updated: N/A</p>
             </div>
         </div>
         <div id="game-list">
@@ -61,6 +62,9 @@
         function displayGames() {
             const gameList = document.getElementById('game-list');
             gameList.innerHTML = '';
+
+            const lastUpdated = new Date().toLocaleString();
+            document.getElementById('last-updated').textContent = `Data Last updated: ${lastUpdated}`;
     
             let row = document.createElement('div');
             row.className = 'row';
