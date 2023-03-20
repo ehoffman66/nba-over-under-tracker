@@ -24,7 +24,7 @@
                 <p id="last-updated">Data Last updated: N/A</p>
             </div>
         </div>
-        <div id="game-list">
+        <div id="game-list" class="game-grid">
             <!-- The game list will be populated here -->
         </div>
     </div>
@@ -55,26 +55,20 @@
                     console.log('Over/Under data updated');
                 })
                 .catch(error => console.error('Error fetching over/under data:', error));
-    
+
             setTimeout(updateOverUnderData, 60000);
         }
-    
+
         function displayGames() {
             const gameList = document.getElementById('game-list');
             gameList.innerHTML = '';
 
             const lastUpdated = new Date().toLocaleString();
             document.getElementById('last-updated').textContent = `Data Last updated: ${lastUpdated}`;
-    
-            let row = document.createElement('div');
-            row.className = 'row';
-    
+
             gameData.forEach((game, index) => {
-                const col = document.createElement('div');
-                col.className = 'col-md-6';
-    
                 const gameDiv = document.createElement('div');
-                gameDiv.className = 'game-div mb-4';
+                gameDiv.className = 'game-div';
                 gameDiv.innerHTML = `
                     <div class="game-content">
                         <div class="game-details">
@@ -87,26 +81,19 @@
                     </div>
                     <hr>
                 `;
-                col.appendChild(gameDiv);
-                row.appendChild(col);
-    
-                if ((index + 1) % 2 === 0) {
-                    gameList.appendChild(row);
-                    row = document.createElement('div');
-                    row.className = 'row';
-                }
+                gameList.appendChild(gameDiv);
             });
-    
+
             if (gameData.length % 2 !== 0) {
-                gameList.appendChild(row);
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'game-div d-none d-md-block';
+                gameList.appendChild(emptyDiv);
             }
         }
-    
+
         updateScores();
         updateOverUnderData();
         setInterval(updateScores, 5000); // Update the interval to call updateScores
-    </script>  
+    </script>
 </body>
 </html>
-
-

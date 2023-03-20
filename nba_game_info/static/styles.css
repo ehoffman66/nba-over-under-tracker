@@ -9,6 +9,24 @@ body {
     align-items: center;
 }
 
+.game-div {
+    width: 100%;
+    background-color: white;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform 0.3s, box-shadow 0.3s; /* Add transition for hover effect */
+}
+
+.game-div:hover {
+    transform: translateY(-5px); /* Move the card up when hovered */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Increase box shadow when hovered */
+}
+
 .header-row {
     justify-content: center;
     display: flex;
@@ -37,44 +55,11 @@ header {
     -webkit-text-fill-color: transparent;
 }
 
-section {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-}
-
-.game-div {
-    width: 100%;
-    background-color: white;
-    padding: 20px;
-    margin: 10px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.game-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.team-logos {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.team-logo {
-    max-width: 75px;
-    height: auto;
-}
-
-.game-details {
-    flex-grow: 1;
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-gap: 24px;
+    padding: 24px;
 }
 
 h5 {
@@ -85,13 +70,6 @@ h5 {
 p {
     font-weight: 400;
     color: #1f2833;
-}
-
-hr {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 #last-updated {
