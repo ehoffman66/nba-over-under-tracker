@@ -76,10 +76,20 @@ def game_score(game, overunder):
     homePeriods = game['homeTeam']['periods']
     awayPeriods = game['awayTeam']['periods']
     game_score_output = []
-    game_score_output.append("Away Team: " + str(game['awayTeam']['score']) + "<br>")
-    game_score_output.append("Periods : " + str(awayPeriods[0]['score']) + ", " + str(awayPeriods[1]['score']) + ", " + str(awayPeriods[2]['score']) + ", " + str(awayPeriods[3]['score']) + "<br>")
-    game_score_output.append("Home Team: " + str(game['homeTeam']['score']) + "<br>")
-    game_score_output.append("Periods : " + str(homePeriods[0]['score']) + ", " + str(homePeriods[1]['score']) + ", " + str(homePeriods[2]['score']) + ", " + str(homePeriods[3]['score']) + "<br>")
+
+    game_score_output.append("<table class='score-table'>")
+    game_score_output.append("<tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th class='total'>Total</th></tr>")
+    game_score_output.append("<tr><td>Away Team:</td>")
+    for period in awayPeriods:
+        game_score_output.append(f"<td>{period['score']}</td>")
+    game_score_output.append(f"<td class='total'>{game['awayTeam']['score']}</td></tr>")
+    
+    game_score_output.append("<tr><td>Home Team:</td>")
+    for period in homePeriods:
+        game_score_output.append(f"<td>{period['score']}</td>")
+    game_score_output.append(f"<td class='total'>{game['homeTeam']['score']}</td></tr>")
+    game_score_output.append("</table>")
+
     game_score_output.append("Total: " + str((game['homeTeam']['score'] + game['awayTeam']['score'])) + "<br>")
     if overunder != 0:
         game_score_output.append("Over/Under: " + str(overunder) + " (" + str(overunder - (game['homeTeam']['score'] + game['awayTeam']['score'])) +  ")" + "<br>")

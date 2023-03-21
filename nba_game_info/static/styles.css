@@ -79,3 +79,26 @@ p {
     text-align: center;
     margin-top: 5px;
 }
+
+.score-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.score-table th,
+.score-table td {
+    text-align: center;
+    padding: 8px;
+    width: 14%; /* Add this line to increase spacing for each quarter */
+}
+
+.score-table th {
+    font-weight: bold;
+}
+
+.score-table .total { /* Add this new class for styling the total */
+    font-weight: bold;
+    font-size: 25px;
+}
+
