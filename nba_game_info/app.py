@@ -90,9 +90,13 @@ def game_score(game, overunder):
     game_score_output.append(f"<td class='total'>{game['homeTeam']['score']}</td></tr>")
     game_score_output.append("</table>")
 
-    game_score_output.append("Total: " + str((game['homeTeam']['score'] + game['awayTeam']['score'])) + "<br>")
+    game_score_output.append("<span class='total-text'>Total: " + str((game['homeTeam']['score'] + game['awayTeam']['score'])) + "</span><br>")
     if overunder != 0:
         game_score_output.append("Over/Under: " + str(overunder) + " (" + str(overunder - (game['homeTeam']['score'] + game['awayTeam']['score'])) +  ")" + "<br>")
+    
+    if any(quarter in game['gameStatusText'] for quarter in ["Q1", "Q2", "Q3", "Q4", "OT", "Half"]) and game['gameStatusText'] != "Final/OT2":
+        game_score_output.append("<span class='live'>Live</span><br>")
+    
     return ''.join(game_score_output)
 
 @app.route("/")
