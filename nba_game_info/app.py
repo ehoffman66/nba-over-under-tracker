@@ -12,6 +12,13 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 api_key = config.get('API_Key', 'key')
 
+# Cache variables
+game_data_cache = None
+cache_expiry_time = datetime.datetime.now()
+
+# Cache duration in seconds
+cache_duration = 60
+
 def refresh_game_data(over_under_data):
     url = "https://nba-prod-us-east-1-mediaops-stats.s3.amazonaws.com/NBA/liveData/scoreboard/todaysScoreboard_00.json"
     response = requests.get(url)
@@ -84,17 +91,21 @@ def index():
 
 @app.route("/game_data")
 def game_data():
-    over_under_data = refresh_over_under()
-    game_data = refresh_game_data(over_under_data)
-    return jsonify(game_data)
+    global game_data_cache, cache_expiry_time
+    current_time = datetime.datetime.now()
 
-@app.route("/over_under_data")
+    if game_data_cache is None or current_time > cache_expiry_time:
+        over_under_data = refresh_over_under()
+        game_data_cache = refresh_game_data(over_under_data)
+        cache_expiry_time = current_time + datetime.timedelta(seconds=cache_duration)
+
+    return jsonify(game_data_cache)
+
+@app.route('/over_under_data')
 def over_under_data():
+    # Replace the following with the actual API call for all games
     over_under_data = refresh_over_under()
     return jsonify(over_under_data)
 
-# (other functions remain the same)
-
 if __name__ == "__main__":
     app.run(debug=True)
-

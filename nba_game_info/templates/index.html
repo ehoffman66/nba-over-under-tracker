@@ -37,6 +37,9 @@
 
     <script>
         let gameData = [];
+        let firstGameStarted = false;
+        let lastOverUnderUpdate = null;
+    
         async function updateScores() {
             try {
                 const response = await fetch('/game_data');
@@ -48,24 +51,26 @@
             }
         }
     
-        function updateOverUnderData() {
-            fetch('/over_under_data')
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Over/Under data updated');
-                })
-                .catch(error => console.error('Error fetching over/under data:', error));
-
-            setTimeout(updateOverUnderData, 60000);
+        async function updateOverUnderData() {
+            if (gameData.some(game => game.status !== 'Scheduled' && game.status !== 'Final')) {
+                const currentTime = new Date();
+                if (!lastOverUnderUpdate || (currentTime - lastOverUnderUpdate) >= 60000) {
+                    lastOverUnderUpdate = currentTime;
+                    // Your logic to update over/under data
+                }
+            }
+            setTimeout(updateOverUnderData, 60000); // Call updateOverUnderData() again after 60 seconds
         }
-
+    
+        setInterval(updateScores, 5000); // Set the interval to call updateScores every 5 seconds
+    
         function displayGames() {
             const gameList = document.getElementById('game-list');
             gameList.innerHTML = '';
-
+    
             const lastUpdated = new Date().toLocaleString();
             document.getElementById('last-updated').textContent = `Data Last updated: ${lastUpdated}`;
-
+    
             gameData.forEach((game, index) => {
                 const gameDiv = document.createElement('div');
                 gameDiv.className = 'game-div';
@@ -83,17 +88,15 @@
                 `;
                 gameList.appendChild(gameDiv);
             });
-
-            if (gameData.length % 2 !== 0) {
-                const emptyDiv = document.createElement('div');
-                emptyDiv.className = 'game-div d-none d-md-block';
-                gameList.appendChild(emptyDiv);
+    
+            if (gameData.length > 0 && gameData[0].status) {
+                firstGameStartDate = new Date(gameData[0].status);
             }
         }
-
-        updateScores();
-        updateOverUnderData();
-        setInterval(updateScores, 5000); // Update the interval to call updateScores
-    </script>
+    
+        updateScores(); // Call updateScores() once when the page loads
+        updateOverUnderData(); // Call updateOverUnderData() once when the page loads
+    </script>        
+           
 </body>
 </html>
