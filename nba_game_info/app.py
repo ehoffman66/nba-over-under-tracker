@@ -105,13 +105,21 @@ def index():
 
 @app.route("/game_data")
 def game_data():
-    global game_data_cache, cache_expiry_time
+    global game_data_cache, cache_expiry_time, cache_duration
     current_time = datetime.datetime.now()
 
     if game_data_cache is None or current_time > cache_expiry_time:
+        # Update game_data_cache
         over_under_data = refresh_over_under()
         game_data_cache = refresh_game_data(over_under_data)
         cache_expiry_time = current_time + datetime.timedelta(seconds=cache_duration)
+
+        # Check if all games have ended
+        all_games_ended = all(game['status'].startswith("Final") for game in game_data_cache)
+
+        # If all games have ended, update the cache duration to a longer period (e.g., 6 hours)
+        if all_games_ended:
+            cache_duration = 6 * 60 * 60
 
     return jsonify(game_data_cache)
 
