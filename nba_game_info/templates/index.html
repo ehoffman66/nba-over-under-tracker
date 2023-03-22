@@ -40,18 +40,37 @@
         let firstGameStarted = false;
         let lastOverUnderUpdate = null;
     
+        let allGamesEnded = false;
+
+        let stopUpdatingOverUnder = false;
+
         async function updateScores() {
             try {
                 const response = await fetch('/game_data');
                 const data = await response.json();
                 gameData = data;
                 displayGames(); // Call displayGames() after updating gameData
+
+                const currentTime = new Date();
+
+                // Update stopUpdatingOverUnder variable
+                stopUpdatingOverUnder = gameData.every(game => /^Final/.test(game.status));
+
+                if (!stopUpdatingOverUnder && (gameData.some(game => game.status !== 'Scheduled'))) {
+                    if (!lastOverUnderUpdate || (currentTime - lastOverUnderUpdate) >= 60000) {
+                        lastOverUnderUpdate = currentTime;
+                        updateOverUnderData();
+                    }
+                }
             } catch (error) {
                 console.error('Error fetching scores:', error);
             }
         }
     
         async function updateOverUnderData() {
+            if (stopUpdatingOverUnder) {
+                return;
+            }
             if (gameData.some(game => game.status !== 'Scheduled' && game.status !== 'Final')) {
                 const currentTime = new Date();
                 if (!lastOverUnderUpdate || (currentTime - lastOverUnderUpdate) >= 60000) {
