@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, url_for
 import datetime
 import requests
 import time
@@ -24,6 +24,16 @@ def refresh_game_data(over_under_data):
     response = requests.get(url)
     games = response.json()['scoreboard']['games']
     return game_info(games, over_under_data)
+
+def get_team_logo_url(team_name):
+    logo_filename = team_name + ".png"
+    logo_path = os.path.join("team_logos", logo_filename)
+    static_folder = os.path.join(app.root_path, "static")
+    print(logo_path)
+    if os.path.exists(os.path.join(static_folder, logo_path)):
+        return url_for("static", filename=logo_path)
+    else:
+        return url_for("static", filename="team_logos/default_logo.png")
 
 def refresh_over_under():
     url = "https://api.the-odds-api.com/v4/sports/basketball_nba/odds/?regions=us&oddsFormat=american&markets=totals&apiKey="
@@ -73,18 +83,24 @@ def teamData(game):
     return away_team_view + " vs " + home_team_view
 
 def game_score(game, overunder):
+    home_team_name = game['homeTeam']['teamCity'] + "_" + game['homeTeam']['teamName']
+    away_team_name = game['awayTeam']['teamCity'] + "_" + game['awayTeam']['teamName']
+
+    home_team_logo_url = get_team_logo_url(home_team_name)
+    away_team_logo_url = get_team_logo_url(away_team_name)
+
     homePeriods = game['homeTeam']['periods']
     awayPeriods = game['awayTeam']['periods']
     game_score_output = []
 
     game_score_output.append("<table class='score-table'>")
     game_score_output.append("<tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th class='total'>Total</th></tr>")
-    game_score_output.append("<tr><td>Away Team:</td>")
+    game_score_output.append("<tr><td><img src='" + away_team_logo_url + "' alt='" + away_team_name + "' class='team-logo'></td>")
     for period in awayPeriods:
         game_score_output.append(f"<td>{period['score']}</td>")
     game_score_output.append(f"<td class='total'>{game['awayTeam']['score']}</td></tr>")
     
-    game_score_output.append("<tr><td>Home Team:</td>")
+    game_score_output.append("<tr><td><img src='" + home_team_logo_url + "' alt='" + home_team_name + "' class='team-logo'></td>")
     for period in homePeriods:
         game_score_output.append(f"<td>{period['score']}</td>")
     game_score_output.append(f"<td class='total'>{game['homeTeam']['score']}</td></tr>")
@@ -98,6 +114,7 @@ def game_score(game, overunder):
         game_score_output.append("<span class='live'>Live</span><br>")
     
     return ''.join(game_score_output)
+
 
 @app.route("/")
 def index():
