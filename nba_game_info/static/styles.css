@@ -153,6 +153,13 @@ p {
     font-size: 1.8em;
     font-weight: bold;
   }
+
+  .team-logo {
+    width: 65px;
+    height: auto;
+    border-radius: 50%;
+}
+
   
   
   
