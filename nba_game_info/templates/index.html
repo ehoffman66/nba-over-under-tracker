@@ -55,7 +55,6 @@
 
                 // Update stopUpdatingOverUnder variable
                 stopUpdatingOverUnder = gameData.every(game => /^Final/.test(game.status));
-
                 if (!stopUpdatingOverUnder && (gameData.some(game => game.status !== 'Scheduled'))) {
                     if (!lastOverUnderUpdate || (currentTime - lastOverUnderUpdate) >= 60000) {
                         lastOverUnderUpdate = currentTime;
