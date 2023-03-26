@@ -1,8 +1,8 @@
 body {
     font-family: 'Roboto', Arial, sans-serif;
     line-height: 1.6;
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: #F9FAF4;
+    color: #4A6163;
 }
 
 .container {
@@ -19,12 +19,12 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
-    transition: transform 0.3s, box-shadow 0.3s; /* Add transition for hover effect */
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .game-div:hover {
-    transform: translateY(-5px); /* Move the card up when hovered */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Increase box shadow when hovered */
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .header-row {
@@ -33,9 +33,9 @@ body {
 }
 
 header {
-    background-color: #1f2833;
+    background-color: #FFC94B;
     padding: 20px;
-    color: white;
+    color: #4A6163;
     display: flex;        
     justify-content: center;
     text-align: center;
@@ -44,15 +44,12 @@ header {
 .main-title {
     font-size: 60px;
     font-weight: 700;
-    color: #ffffff;
+    color: #4A6163;
     text-align: center;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     letter-spacing: 1px;
     line-height: 1.2;
     font-family: 'Roboto', Arial, sans-serif;
-    background: linear-gradient(to right, #1f2833, #0b3d91);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
 
 .game-grid {
@@ -64,18 +61,18 @@ header {
 
 h5 {
     font-weight: 500;
-    color: #0b3d91;
+    color: #F17A7E;
 }
 
 p {
     font-weight: 400;
-    color: #1f2833;
+    color: #4A6163;
 }
 
 #last-updated {
     font-size: 16px;
     font-weight: 400;
-    color: #231919;
+    color: #4A6163;
     text-align: center;
     margin-top: 5px;
 }
@@ -90,14 +87,14 @@ p {
 .score-table td {
     text-align: center;
     padding: 8px;
-    width: 14%; /* Add this line to increase spacing for each quarter */
+    width: 14%;
 }
 
 .score-table th {
     font-weight: bold;
 }
 
-.score-table .total { /* Add this new class for styling the total */
+.score-table .total {
     font-weight: bold;
     font-size: 25px;
 }
@@ -121,15 +118,15 @@ p {
     display: inline-block;
     font-size: 1em;
     font-weight: bold;
-    color: red;
-    border: 2px solid red;
+    color: #F17A7E;
+    border: 2px solid #F17A7E;
     padding: 3px 6px;
     border-radius: 5px;
-    background-color: rgba(255, 0, 0, 0.1);
+    background-color: rgba(241, 122, 126, 0.1);
     animation: pulse 1s infinite;
-  }
+}
   
-  @keyframes pulse {
+@keyframes pulse {
     0% {
       transform: scale(1);
       opacity: 1;
@@ -160,7 +157,8 @@ p {
     border-radius: 50%;
 }
 
-  
-  
-  
-
+.game-div hr {
+    border: 0;
+    height: 4px;
+    background-color: #4A6163;
+}
