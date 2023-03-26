@@ -29,7 +29,6 @@ def get_team_logo_url(team_name):
     logo_filename = team_name + ".png"
     logo_path = os.path.join("team_logos", logo_filename)
     static_folder = os.path.join(app.root_path, "static")
-    print(logo_path)
     if os.path.exists(os.path.join(static_folder, logo_path)):
         return url_for("static", filename=logo_path)
     else:
