@@ -162,3 +162,15 @@ p {
     height: 4px;
     background-color: #4A6163;
 }
+
+.team-logo {
+    width: 65px;
+    height: auto;
+    border-radius: 50%;
+    transition: transform 0.3s, box-shadow 0.3s; /* Add transition for hover effect */
+}
+
+.team-logo:hover {
+    transform: translateY(-5px) rotate(-5deg); /* Move the logo up and rotate slightly when hovered */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Increase box shadow when hovered */
+}
