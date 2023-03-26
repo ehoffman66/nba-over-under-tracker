@@ -102,6 +102,8 @@
                                 ${game.status}
                                 <br>
                                 ${game.score ? game.score : ''}
+                                ${game.status.toLowerCase().includes("live") ? '<span class="live">Live</span>' : ''}
+                                ${game.is_close_game ? '<span class="close-game">Close Game</span>' : ''}
                             </p>
                         </div>
                     </div>

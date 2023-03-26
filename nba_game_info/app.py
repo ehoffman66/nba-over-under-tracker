@@ -109,9 +109,18 @@ def game_score(game, overunder):
     if overunder != 0:
         game_score_output.append("Over/Under: " + str(overunder) + " (" + str(overunder - (game['homeTeam']['score'] + game['awayTeam']['score'])) +  ")" + "<br>")
     
-    if any(quarter in game['gameStatusText'] for quarter in ["Q1", "Q2", "Q3", "Q4", "OT", "Half"]) and game['gameStatusText'] != "Final/OT2":
-        game_score_output.append("<span class='live'>Live</span><br>")
-    
+    home_score = game['homeTeam']['score']
+    away_score = game['awayTeam']['score']
+    is_close_game = abs(home_score - away_score) <= 5
+
+    status = game['gameStatusText']
+    if any(quarter in status for quarter in ["Q1", "Q2", "Q3", "Q4", "OT", "Half"]) and status != "Final/OT2":
+        status = ""
+        status += '<span class="live"> Live</span>'
+        if is_close_game:
+            status += ' <span class="close-game">Close Game</span>'
+        game_score_output.append(status + '<br>')
+
     return ''.join(game_score_output)
 
 

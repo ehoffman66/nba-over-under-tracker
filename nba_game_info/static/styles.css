@@ -174,3 +174,15 @@ p {
     transform: translateY(-5px) rotate(-5deg); /* Move the logo up and rotate slightly when hovered */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Increase box shadow when hovered */
 }
+
+.close-game {
+    display: inline-block;
+    font-size: 1em;
+    font-weight: bold;
+    color: #F9A66C; /* You can change this color to your preference */
+    border: 2px solid #F9A66C; /* You can change this color to your preference */
+    padding: 3px 6px;
+    border-radius: 5px;
+    background-color: rgba(241, 122, 126, 0.1); /* You can change this color to your preference */
+    margin-left: 5px;
+}
