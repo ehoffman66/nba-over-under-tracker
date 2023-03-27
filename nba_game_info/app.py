@@ -1,10 +1,11 @@
 from flask import Flask, render_template, jsonify, url_for
 import datetime
 import requests
-import time
-import threading
 import os
 import configparser
+from nba_api.stats.static import teams
+from nba_api.stats.endpoints import teamgamelog, commonteamroster, playergamelog
+import datetime
 
 app = Flask(__name__)
 
@@ -24,6 +25,13 @@ def refresh_game_data(over_under_data):
     response = requests.get(url)
     games = response.json()['scoreboard']['games']
     return game_info(games, over_under_data)
+
+def get_team_id(team_name):
+    all_teams = teams.get_teams()
+    for team in all_teams:
+        if team_name == team['full_name']:
+            return team['id']
+    return None
 
 def get_team_logo_url(team_name):
     logo_filename = team_name + ".png"
@@ -73,6 +81,43 @@ def formatDate(date):
     dt = datetime.datetime.strptime(date, "%Y-%m-%dT%H:%M:%S%z")
     dt = dt.replace(tzinfo=None)
     return dt
+
+def team_played_day_before(team_name, game_date):
+    team_id = get_team_id(team_name)
+    if team_id is None:
+        return False
+
+    team_game_log = teamgamelog.TeamGameLog(team_id=team_id).get_data_frames()[0]
+    team_game_log['GAME_DATE'] = pd.to_datetime(team_game_log['GAME_DATE'])
+
+    game_date = datetime.datetime.strptime(game_date, "%Y-%m-%d")
+    day_before = game_date - datetime.timedelta(days=1)
+
+    return any(team_game_log['GAME_DATE'] == day_before)    
+
+def get_injury_report(team_name):
+    team_id = get_team_id(team_name)
+    if team_id is None:
+        return []
+
+    roster = commonteamroster.CommonTeamRoster(team_id=team_id).get_data_frames()[0]
+    injured_players = []
+
+    for _, player in roster.iterrows():
+        player_id = player['PLAYER_ID']
+        player_game_log = playergamelog.PlayerGameLog(player_id=player_id).get_data_frames()[0]
+
+        if len(player_game_log) == 0:
+            continue
+
+        last_game = player_game_log.iloc[0]
+        if last_game['INJURY_STATUS'] != 'ACTIVE':
+            injured_players.append({
+                'name': player['PLAYER'],
+                'injury_status': last_game['INJURY_STATUS']
+            })
+
+    return injured_players
 
 def teamData(game):
     away_team_name = game['awayTeam']['teamCity'] + " " + game['awayTeam']['teamName']
