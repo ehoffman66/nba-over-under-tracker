@@ -15,6 +15,9 @@
 
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
     <title>NBA Over/Under Game Data</title>
 </head>
 <body>
@@ -87,36 +90,56 @@
         function displayGames() {
             const gameList = document.getElementById('game-list');
             gameList.innerHTML = '';
-    
+
             const lastUpdated = new Date().toLocaleString();
             document.getElementById('last-updated').textContent = `Data Last updated: ${lastUpdated}`;
-    
+
             gameData.forEach((game, index) => {
                 const gameDiv = document.createElement('div');
                 gameDiv.className = 'game-div';
                 gameDiv.innerHTML = `
-                    <div class="game-content">
-                        <div class="game-details">
-                            <h4>${game.teams}</h4>
-                            <p class="game-status">
-                                ${game.status}
-                                <br>
-                                ${game.score ? game.score : ''}
-                                ${game.status.toLowerCase().includes("live") ? '<span class="live">Live</span>' : ''}
-                                ${game.is_close_game ? '<span class="close-game">Close Game</span>' : ''}
-                            </p>
+                    <div class="game-card-container">
+                        <div class="game-card">
+                            <div class="game-card-face game-card-face--front">
+                                <!-- Front face content -->
+                                <div class="game-details">
+                                    <h4>${game.teams}</h4>
+                                    <p class="game-status">
+                                        ${game.status}
+                                        <br>
+                                        ${game.score ? game.score : ''}
+                                        ${game.status.toLowerCase().includes("live") ? '<span class="live">Live</span>' : ''}
+                                        ${game.is_close_game ? '<span class="close-game">Close Game</span>' : ''}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="game-card-face game-card-face--back">
+                                <!-- Back face content -->
+                                <div class="game-details">
+                                    <h4>Back Side Content</h4>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <hr>
                 `;
                 gameList.appendChild(gameDiv);
+
+                // Add event listener to flip the card
+                const gameCard = gameDiv.querySelector('.game-card');
+                const logos = gameDiv.querySelectorAll('.team-logo');
+                logos.forEach(logo => {
+                    logo.addEventListener('click', () => {
+                        gameCard.classList.toggle('game-card-flipped');
+                    });
+                });
             });
-    
+
             if (gameData.length > 0 && gameData[0].status) {
                 firstGameStartDate = new Date(gameData[0].status);
             }
         }
-    
+
         updateScores(); // Call updateScores() once when the page loads
         updateOverUnderData(); // Call updateOverUnderData() once when the page loads
     </script>        
