@@ -133,20 +133,20 @@ p {
       transform: scale(1);
       opacity: 1;
     }
-  }
+}
 
-  .game-status {
+.game-status {
     font-size: 1.4em;
     font-weight: bold;
     padding-right: 15px; 
-  }
+}
 
-  .total-text {
+.total-text {
     font-size: 1.8em;
     font-weight: bold;
-  }
+}
 
-  .team-logo {
+.team-logo {
     width: 65px;
     height: auto;
     border-radius: 50%;
@@ -162,23 +162,23 @@ p {
     width: 65px;
     height: auto;
     border-radius: 50%;
-    transition: transform 0.3s, box-shadow 0.3s; /* Add transition for hover effect */
+    transition: transform 0.3s, box-shadow 0.3s; 
 }
 
 .team-logo:hover {
-    transform: translateY(-5px) rotate(-5deg); /* Move the logo up and rotate slightly when hovered */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Increase box shadow when hovered */
+    transform: translateY(-5px) rotate(-5deg); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
 }
 
 .close-game {
     display: inline-block;
     font-size: 1em;
     font-weight: bold;
-    color: #F9A66C; /* You can change this color to your preference */
-    border: 2px solid #F9A66C; /* You can change this color to your preference */
+    color: #F9A66C; 
+    border: 2px solid #F9A66C; 
     padding: 3px 6px;
     border-radius: 5px;
-    background-color: rgba(241, 122, 126, 0.1); /* You can change this color to your preference */
+    background-color: rgba(241, 122, 126, 0.1); 
     margin-left: 5px;
 }
 
@@ -218,14 +218,12 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Remove fixed height to make it dynamic based on content */
 }
 
 .game-card {
   perspective: 1000px;
   position: relative;
   width: 100%;
-  /* Remove fixed height from .game-card */
 }
 
 .game-card-face {
@@ -242,9 +240,9 @@ p {
 
 .game-card-face--back {
   transform: rotateY(180deg);
-  position: absolute; /* Only apply position absolute to the back face */
-  top: 0; /* Align the back face to the top */
-  left: 0; /* Align the back face to the left */
+  position: absolute;
+  top: 0; 
+  left: 0;
 }
 
 .game-card-flipped .game-card-face--front {
@@ -254,5 +252,3 @@ p {
 .game-card-flipped .game-card-face--back {
   transform: rotateY(0);
 }
-
-/* The rest of the CSS code remains unchanged */
