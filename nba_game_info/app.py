@@ -18,7 +18,7 @@ game_data_cache = None
 cache_expiry_time = datetime.datetime.now()
 
 # Cache duration in seconds
-cache_duration = 60
+cache_duration = 30
 
 def refresh_game_data(over_under_data):
     url = "https://nba-prod-us-east-1-mediaops-stats.s3.amazonaws.com/NBA/liveData/scoreboard/todaysScoreboard_00.json"
@@ -177,18 +177,17 @@ def game_data():
     global game_data_cache, cache_expiry_time, cache_duration
     current_time = datetime.datetime.now()
 
-    if game_data_cache is None or current_time > cache_expiry_time:
-        # Update game_data_cache
+    # Check if cache is None, expired, or if any games are in progress
+    should_refresh_cache = (
+        game_data_cache is None
+        or current_time > cache_expiry_time
+        or any(game['status'].lower().startswith("q") for game in game_data_cache)
+    )
+
+    if should_refresh_cache:
         over_under_data = refresh_over_under()
         game_data_cache = refresh_game_data(over_under_data)
         cache_expiry_time = current_time + datetime.timedelta(seconds=cache_duration)
-
-        # Check if all games have ended
-        all_games_ended = all(game['status'].startswith("Final") for game in game_data_cache)
-
-        # If all games have ended, update the cache duration to a longer period (e.g., 6 hours)
-        if all_games_ended:
-            cache_duration = 6 * 60 * 60
 
     return jsonify(game_data_cache)
 
