@@ -177,7 +177,6 @@ def game_data():
     global game_data_cache, cache_expiry_time, cache_duration
     current_time = datetime.datetime.now()
 
-    # Check if cache is None, expired, or if any games are in progress
     should_refresh_cache = (
         game_data_cache is None
         or current_time > cache_expiry_time
@@ -193,7 +192,6 @@ def game_data():
 
 @app.route('/over_under_data')
 def over_under_data():
-    # Replace the following with the actual API call for all games
     over_under_data = refresh_over_under()
     return jsonify(over_under_data)
 
