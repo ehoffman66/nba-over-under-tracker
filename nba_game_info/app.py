@@ -68,7 +68,6 @@ def game_info(games, over_under_data):
         if current_date > dt:
             game_data['status'] = game['gameStatusText']
             for value in over_under_data:
-                home_team = game['homeTeam']['teamCity'] + " " + game['homeTeam']['teamName']
                 if value[0] == home_team:
                     overunder = value[1]
             game_data['score'] = game_score(game, overunder)
@@ -99,10 +98,7 @@ def get_injury_report(team_name):
     team_id = get_team_id(team_name)
     if team_id is None:
         return []
-
-    roster = commonteamroster.CommonTeamRoster(team_id=team_id).get_data_frames()[0]
     injured_players = []
-
     for _, player in roster.iterrows():
         player_id = player['PLAYER_ID']
         player_game_log = playergamelog.PlayerGameLog(player_id=player_id).get_data_frames()[0]
@@ -116,7 +112,6 @@ def get_injury_report(team_name):
                 'name': player['PLAYER'],
                 'injury_status': last_game['INJURY_STATUS']
             })
-
     return injured_players
 
 def teamData(game):
