@@ -93,7 +93,10 @@
 
             const lastUpdated = new Date().toLocaleString();
             document.getElementById('last-updated').textContent = `Data Last updated: ${lastUpdated}`;
-
+            if (gameData.length === 0)
+                gameDiv = document.createElement('div');
+                gameDiv.className = 'game-div';
+                gameDiv.innerHTML = `<h3>No Games Today</h3>`;
             gameData.forEach((game, index) => {
                 const gameDiv = document.createElement('div');
                 gameDiv.className = 'game-div';
