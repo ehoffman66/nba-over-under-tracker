@@ -253,3 +253,15 @@ p {
 .game-card-flipped .game-card-face--back {
   transform: rotateY(0);
 }
+
+.big-logo {
+    width: 100px; /* Adjust the size as needed */
+    position: relative;
+    left: -15px; /* Negative left value to create an overlapping effect */
+}
+
+.team-logos-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
