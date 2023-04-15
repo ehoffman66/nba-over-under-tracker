@@ -61,6 +61,10 @@ def game_info(games, over_under_data):
     for game in games:
         game_data = {}
         game_data['teams'] = teamData(game)
+        home_team_name = game['homeTeam']['teamCity'] + " " + game['homeTeam']['teamName']
+        away_team_name = game['awayTeam']['teamCity'] + " " + game['awayTeam']['teamName']
+        game_data['home_team_logo'] = get_team_logo_url(home_team_name)
+        game_data['away_team_logo'] = get_team_logo_url(away_team_name)
         dt = formatDate(game['gameEt'])
         formatted_date = dt.strftime("%m/%d/%Y %I:%M %p")
         current_date = datetime.datetime.now()
@@ -68,7 +72,8 @@ def game_info(games, over_under_data):
         if current_date > dt:
             game_data['status'] = game['gameStatusText']
             for value in over_under_data:
-                if value[0] == home_team:
+                # Use home_team_name instead of home_team
+                if value[0] == home_team_name:
                     overunder = value[1]
             game_data['score'] = game_score(game, overunder)
         else:
