@@ -54,11 +54,10 @@
                 const response = await fetch('/game_data');
                 const data = await response.json();
                 gameData = data;
-                displayGames(); // Call displayGames() after updating gameData
+                displayGames();
 
                 const currentTime = new Date();
 
-                // Update stopUpdatingOverUnder variable
                 stopUpdatingOverUnder = gameData.every(game => /^Final/.test(game.status));
                 if (!stopUpdatingOverUnder && (gameData.some(game => game.status !== 'Scheduled'))) {
                     if (!lastOverUnderUpdate || (currentTime - lastOverUnderUpdate) >= 60000) {
@@ -79,7 +78,6 @@
                 const currentTime = new Date();
                 if (!lastOverUnderUpdate || (currentTime - lastOverUnderUpdate) >= 60000) {
                     lastOverUnderUpdate = currentTime;
-                    // Your logic to update over/under data
                 }
             }
             setTimeout(updateOverUnderData, 60000); // Call updateOverUnderData() again after 60 seconds
@@ -93,53 +91,36 @@
 
             const lastUpdated = new Date().toLocaleString();
             document.getElementById('last-updated').textContent = `Data Last updated: ${lastUpdated}`;
-            if (gameData.length === 0)
-                gameDiv = document.createElement('div');
-                gameDiv.className = 'game-div';
-                gameDiv.innerHTML = `<h3>No Games Today</h3>`;
+
+            const dateTimeRegex = /^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2} [AP]M$/;
+
             gameData.forEach((game, index) => {
                 const gameDiv = document.createElement('div');
                 gameDiv.className = 'game-div';
+
+                // Display the game content (teams, status, score)
                 gameDiv.innerHTML = `
-                    <div class="game-card-container">
-                        <div class="game-card">
-                            <div class="game-card-face game-card-face--front">
-                                <!-- Front face content -->
-                                <div class="game-details">
-                                    <h4>${game.teams}</h4>
-                                    <p class="game-status">
-                                        ${game.status}
-                                        <br>
-                                        ${game.score ? game.score : ''}
-                                        ${game.status.toLowerCase().includes("live") ? '<span class="live">Live</span>' : ''}
-                                        ${game.is_close_game ? '<span class="close-game">Close Game</span>' : ''}
-                                    </p>
-                                </div>
+                    <div class="game-content">
+                        <div class="game-details">
+                            <h4>${game.teams}</h4>
+                            <p class="game-status">${game.status}</p>
+                        </div>
+                        ${dateTimeRegex.test(game.status) ? `
+                            <div class="team-logos-container">
+                                <img src="${game.away_team_logo}" alt="Away Team Logo" class="team-logo big-logo">
+                                <img src="${game.home_team_logo}" alt="Home Team Logo" class="team-logo big-logo">
                             </div>
-                            <div class="game-card-face game-card-face--back">
-                                <!-- Back face content -->
-                                <div class="game-details">
-                                    <h4>Back Side Content</h4>
-                                </div>
-                            </div>
+                        ` : ''}
+                        <div class="game-score">
+                            ${game.score ? game.score : ''}
+                            ${game.status.toLowerCase().includes("live") ? '<span class="live">Live</span>' : ''}
+                            ${game.is_close_game ? '<span class="close-game">Close Game</span>' : ''}
                         </div>
                     </div>
+                    <hr>
                 `;
                 gameList.appendChild(gameDiv);
-
-                // Add event listener to flip the card
-                const gameCard = gameDiv.querySelector('.game-card');
-                const logos = gameDiv.querySelectorAll('.team-logo');
-                logos.forEach(logo => {
-                    logo.addEventListener('click', () => {
-                        gameCard.classList.toggle('game-card-flipped');
-                    });
-                });
             });
-
-            if (gameData.length > 0 && gameData[0].status) {
-                firstGameStartDate = new Date(gameData[0].status);
-            }
         }
 
         updateScores(); // Call updateScores() once when the page loads
