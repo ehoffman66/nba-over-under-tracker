@@ -4,7 +4,8 @@ import requests
 import os
 import configparser
 from nba_api.stats.static import teams
-from nba_api.stats.endpoints import teamgamelog, commonteamroster, playergamelog
+from nba_api.stats.endpoints import commonteamroster, PlayerDashboardByYearOverYear
+from nba_api.stats.endpoints import LeagueDashPlayerStats
 import datetime
 
 app = Flask(__name__)
@@ -120,6 +121,50 @@ def get_injury_report(team_name):
                 'injury_status': last_game['INJURY_STATUS']
             })
     return injured_players
+
+def get_top_players(team_id, num_players=3):
+    # Get the league-wide player statistics
+    player_stats = LeagueDashPlayerStats().get_data_frames()[0]
+    
+    # Filter the player statistics to keep only the players from the specified team
+    team_players_stats = player_stats[player_stats['TEAM_ID'] == team_id]
+    
+    # Sort the player statistics by points per game (PTS) in descending order
+    team_players_sorted_by_pts = team_players_stats.sort_values(by='PTS', ascending=False)
+    
+    # Get the top 'num_players' players based on points per game
+    top_players_df = team_players_sorted_by_pts.head(num_players)
+    
+    # Create a list to store the top players' information
+    top_players_info = []
+    
+    # Iterate through each player in the top players data frame
+    for _, player in top_players_df.iterrows():
+        player_id = player['PLAYER_ID']
+        player_name = player['PLAYER_NAME']
+        player_pts = player['PTS']
+        player_ast = player['AST']
+        player_reb = player['REB']
+        
+        # Create a dictionary with the player's information and stats
+        player_info = {
+            'name': player_name,
+            'points_per_game': player_pts,
+            'assists_per_game': player_ast,
+            'rebounds_per_game': player_reb
+        }
+        
+        # Add the player's information to the top players list
+        top_players_info.append(player_info)
+    
+    return top_players_info
+
+# Example usage:
+# Get the team ID for the Los Angeles Lakers
+team_id = 1610612747
+# Get the top 3 players for the Lakers
+top_players = get_top_players(team_id, num_players=3)
+print(top_players)
 
 def teamData(game):
     away_team_name = game['awayTeam']['teamCity'] + " " + game['awayTeam']['teamName']
