@@ -7,6 +7,7 @@ from nba_api.stats.static import teams
 from nba_api.stats.endpoints import commonteamroster, PlayerDashboardByYearOverYear
 from nba_api.stats.endpoints import LeagueDashPlayerStats
 import datetime
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -20,6 +21,12 @@ cache_expiry_time = datetime.datetime.now()
 
 # Cache duration in seconds
 cache_duration = 30
+
+headers = {
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
+  'Referer': 'https://www.nba.com/'
+}
+payload={}
 
 def refresh_game_data(over_under_data):
     url = "https://nba-prod-us-east-1-mediaops-stats.s3.amazonaws.com/NBA/liveData/scoreboard/todaysScoreboard_00.json"
@@ -132,10 +139,11 @@ def get_injury_report(team_name):
 
 def get_top_players(team_name, num_players=3):
     team_id = get_team_id(team_name)
-
+    url = "https://stats.nba.com/stats/leaguedashplayerstats?LastNGames=0&MeasureType=Base&Month=0&OpponentTeamID=0&PaceAdjust=N&PerMode=Totals&Period=0&PlusMinus=N&Rank=N&Season=2019-20&SeasonType=Regular+Season"
     # Get the league-wide player statistics
-    player_stats = LeagueDashPlayerStats().get_data_frames()[0]
-    
+    response = requests.request("GET", url, headers=headers, data=payload)
+    player_stats = response.json()
+    player_stats = pd.DataFrame(data=player_stats['resultSets'][0]["rowSet"], columns=player_stats['resultSets'][0]["headers"])
     # Filter the player statistics to keep only the players from the specified team
     team_players_stats = player_stats[player_stats['TEAM_ID'] == team_id]
     
