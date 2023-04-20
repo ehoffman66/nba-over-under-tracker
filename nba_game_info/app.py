@@ -144,7 +144,6 @@ def get_top_players(team_name, num_players=3):
     response = requests.request("GET", url, headers=headers, data=payload)
     player_stats = response.json()
     player_stats = pd.DataFrame(data=player_stats['resultSets'][0]["rowSet"], columns=player_stats['resultSets'][0]["headers"])
-    print(player_stats)
     # Filter the player statistics to keep only the players from the specified team
     team_players_stats = player_stats[player_stats['TEAM_ID'] == team_id]
     
