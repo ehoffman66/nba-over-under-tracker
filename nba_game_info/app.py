@@ -81,8 +81,6 @@ def game_info(games, over_under_data):
         away_team_logo_name = game['awayTeam']['teamCity'] + "_" + game['awayTeam']['teamName']
         game_data['home_team_logo'] = get_team_logo_url(home_team_logo_name)
         game_data['away_team_logo'] = get_team_logo_url(away_team_logo_name)
-        game_data['home_team_top_players'] = "<b>Top " + home_team_name + " players:</b>" + get_top_players(home_team_name, num_players=3)
-        game_data['away_team_top_players'] = "<b>Top " + away_team_name + " players:</b>" +get_top_players(away_team_name, num_players=3)
         dt = formatDate(game['gameEt'])
         formatted_date = dt.strftime("%m/%d/%Y %I:%M %p")
         current_date = datetime.datetime.now()
@@ -136,49 +134,6 @@ def get_injury_report(team_name):
                 'injury_status': last_game['INJURY_STATUS']
             })
     return injured_players
-
-def get_top_players(team_name, num_players=3):
-    team_id = get_team_id(team_name)
-    url = "https://stats.nba.com/stats/leaguedashplayerstats?LastNGames=0&MeasureType=Base&Month=0&OpponentTeamID=0&PaceAdjust=N&PerMode=Totals&Period=0&PlusMinus=N&Rank=N&Season=2022-23&SeasonType=Regular+Season"
-    # Get the league-wide player statistics
-    response = requests.request("GET", url, headers=headers, data=payload)
-    player_stats = response.json()
-    player_stats = pd.DataFrame(data=player_stats['resultSets'][0]["rowSet"], columns=player_stats['resultSets'][0]["headers"])
-    # Filter the player statistics to keep only the players from the specified team
-    team_players_stats = player_stats[player_stats['TEAM_ID'] == team_id]
-    
-    # Sort the player statistics by points per game (PTS) in descending order
-    team_players_sorted_by_pts = team_players_stats.sort_values(by='PTS', ascending=False)
-    
-    # Get the top 'num_players' players based on points per game
-    top_players_df = team_players_sorted_by_pts.head(num_players)
-    
-    # Create a list to store the top players' information
-    #top_players_info = []
-
-    top_players_info = ""
-    
-    # Iterate through each player in the top players data frame
-    for _, player in top_players_df.iterrows():
-        player_name = player['PLAYER_NAME']
-        player_pts = round(player['PTS'] / player['GP'],1)
-        player_ast = player['AST']
-        player_reb = player['REB']
-        
-        # Create a dictionary with the player's information and stats
-        #player_info = {
-        #    'name': player_name,
-        #    'points_per_game': player_pts,
-        #    'assists_per_game': player_ast,
-        #    'rebounds_per_game': player_reb
-        #}
-
-        top_players_info = top_players_info + " " + player_name + "(" + str(player_pts) + ")"
-
-        # Add the player's information to the top players list
-        #top_players_info.append(player_info)
-    
-    return top_players_info
 
 def teamData(game):
     away_team_name = game['awayTeam']['teamCity'] + " " + game['awayTeam']['teamName']
