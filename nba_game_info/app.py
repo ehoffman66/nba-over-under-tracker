@@ -139,7 +139,7 @@ def get_injury_report(team_name):
 
 def get_top_players(team_name, num_players=3):
     team_id = get_team_id(team_name)
-    url = "https://stats.nba.com/stats/leaguedashplayerstats?LastNGames=0&MeasureType=Base&Month=0&OpponentTeamID=0&PaceAdjust=N&PerMode=Totals&Period=0&PlusMinus=N&Rank=N&Season=2019-20&SeasonType=Regular+Season"
+    url = "https://stats.nba.com/stats/leaguedashplayerstats?LastNGames=0&MeasureType=Base&Month=0&OpponentTeamID=0&PaceAdjust=N&PerMode=Totals&Period=0&PlusMinus=N&Rank=N&Season=2022-23&SeasonType=Regular+Season"
     # Get the league-wide player statistics
     response = requests.request("GET", url, headers=headers, data=payload)
     player_stats = response.json()
