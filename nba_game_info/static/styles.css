@@ -272,4 +272,19 @@ p {
     padding: 0.25rem 0.5rem; /* Adjust the padding as needed */
     margin-right: 0.5rem; /* Adjust the margin as needed */
 }
+
+.badge-primary {
+    background-color: #4A6163;
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    margin-right: 0.5rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .badge-primary:hover {
+    background-color: #F17A7E; /* Modify the hover background color */
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
   
