@@ -4,8 +4,10 @@ import requests
 import os
 import configparser
 from nba_api.stats.static import teams
-from nba_api.stats.endpoints import teamgamelog, commonteamroster, playergamelog
+from nba_api.stats.endpoints import commonteamroster, PlayerDashboardByYearOverYear
+from nba_api.stats.endpoints import LeagueDashPlayerStats
 import datetime
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -20,6 +22,12 @@ cache_expiry_time = datetime.datetime.now()
 # Cache duration in seconds
 cache_duration = 30
 
+headers = {
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36',
+  'Referer': 'https://www.nba.com/'
+}
+payload={}
+
 def refresh_game_data(over_under_data):
     url = "https://nba-prod-us-east-1-mediaops-stats.s3.amazonaws.com/NBA/liveData/scoreboard/todaysScoreboard_00.json"
     response = requests.get(url)
@@ -27,9 +35,15 @@ def refresh_game_data(over_under_data):
     return game_info(games, over_under_data)
 
 def get_team_id(team_name):
+    team_name_mapping = {
+        'LA Lakers': 'Los Angeles Lakers',
+        'LA Clippers': 'Los Angeles Clippers',
+        # ... add more mappings as needed
+    }
+    full_team_name = team_name_mapping.get(team_name, team_name)
     all_teams = teams.get_teams()
     for team in all_teams:
-        if team_name == team['full_name']:
+        if team['full_name'].lower() == full_team_name.lower():
             return team['id']
     return None
 
