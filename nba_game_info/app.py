@@ -60,6 +60,7 @@ def game_info(games, over_under_data):
     game_list = []
     for game in games:
         game_data = {}
+        tags = []
         game_data['teams'] = teamData(game)
         home_team_name = game['homeTeam']['teamCity'] + " " + game['homeTeam']['teamName']
         away_team_name = game['awayTeam']['teamCity'] + " " + game['awayTeam']['teamName']
@@ -67,6 +68,9 @@ def game_info(games, over_under_data):
         away_team_logo_name = game['awayTeam']['teamCity'] + "_" + game['awayTeam']['teamName']
         game_data['home_team_logo'] = get_team_logo_url(home_team_logo_name)
         game_data['away_team_logo'] = get_team_logo_url(away_team_logo_name)
+        if 'poRoundDesc' in game or len(game['poRoundDesc']) != 0:
+            tags.append('Playoffs')
+        game_data['tags'] = tags
         dt = formatDate(game['gameEt'])
         formatted_date = dt.strftime("%m/%d/%Y %I:%M %p")
         current_date = datetime.datetime.now()
