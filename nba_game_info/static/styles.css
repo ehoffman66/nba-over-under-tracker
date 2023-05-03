@@ -265,3 +265,11 @@ p {
     justify-content: center;
     align-items: center;
 }
+
+.badge-primary {
+    background-color: #4A6163; /* Set the background color */
+    color: #fff; /* Set the text color */
+    padding: 0.25rem 0.5rem; /* Adjust the padding as needed */
+    margin-right: 0.5rem; /* Adjust the margin as needed */
+}
+  
