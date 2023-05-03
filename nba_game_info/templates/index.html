@@ -93,17 +93,19 @@
             document.getElementById('last-updated').textContent = `Data Last updated: ${lastUpdated}`;
 
             const dateTimeRegex = /^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2} [AP]M$/;
-
             gameData.forEach((game, index) => {
                 const gameDiv = document.createElement('div');
+                const tagsHTML = game.tags.map(tag => `<span class="badge badge-primary">${tag}</span>`).join(' ');
                 gameDiv.className = 'game-div';
-
                 // Display the game content (teams, status, score)
                 gameDiv.innerHTML = `
                     <div class="game-content">
                         <div class="game-details">
                             <h4>${game.teams}</h4>
                             <p class="game-status">${game.status}</p>
+                        </div>
+                        <div class="game-tags">
+                            ${tagsHTML}
                         </div>
                         ${dateTimeRegex.test(game.status) ? `
                             <div class="team-logos-container">
