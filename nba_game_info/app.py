@@ -6,6 +6,8 @@ import configparser
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import commonteamroster, PlayerDashboardByYearOverYear
 from nba_api.stats.endpoints import LeagueDashPlayerStats
+from nba_api.stats.static import players
+from nba_api.stats.endpoints import LeagueGameFinder
 import datetime
 import pandas as pd
 
@@ -33,6 +35,21 @@ def refresh_game_data(over_under_data):
     response = requests.get(url)
     games = response.json()['scoreboard']['games']
     return game_info(games, over_under_data)
+
+def get_last_game_for_team(team_id):
+    # Create an instance of the LeagueGameFinder endpoint
+    game_finder = LeagueGameFinder(team_id_nullable=team_id, season_nullable='2022-23', date_from_nullable='')
+
+    # Sort the results by date in descending order
+    game_finder.order_by_recent_or_date = 'DESC'
+
+    # Get the results
+    games = game_finder.get_data_frames()[0]
+
+    # Get the last game
+    last_game = games.iloc[0]
+
+    return last_game
 
 def get_team_id(team_name):
     team_name_mapping = {
